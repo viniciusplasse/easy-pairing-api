@@ -1,24 +1,29 @@
-# README
+# EasyPairingAPI
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An open-source project which builds matrixes to help agile teams with pair programming.
 
-Things you may want to cover:
+Some of its features are:
 
-* Ruby version
+- Generating pairing matrixes for any team
+- Recommending pairs based on how many times each member paired with the others
+- Keeping track of the pairing dates
 
-* System dependencies
+## Looking for the front-end?
+[https://github.com/hscorrea/easy-pairing](https://github.com/hscorrea/easy-pairing)
 
-* Configuration
+## Running the project
 
-* Database creation
+### Build images
+```
+docker-compose build
+```
 
-* Database initialization
+### Start up containers
+```
+docker-compose up -d
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Stop containers
+```
+docker-compose down
+```
