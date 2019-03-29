@@ -4,6 +4,9 @@ docker-up:
 docker-down:
 	docker-compose down
 
+docker-console:
+	docker exec -it $(shell docker ps -qf "name=easy-pairing-api") bash
+
 app-log:
 	docker logs -f easy-pairing-api
 
