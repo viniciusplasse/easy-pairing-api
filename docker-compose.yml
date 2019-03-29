@@ -2,10 +2,12 @@ version: '3'
 services:
   db:
     image: postgres
+    container_name: easy-pairing-db
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
   web:
     build: .
+    container_name: easy-pairing-api
     command: >
       bash -c "rm -f tmp/pids/server.pid
       && bundle install
