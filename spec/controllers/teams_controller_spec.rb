@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe TeamsController, type: :controller do
 
+# TODO: Use FactoryGirl instead of instantiating every model manually
+
   before :all do
     @john = Member.new
     @john.id = 1
