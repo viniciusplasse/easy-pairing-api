@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_29_174611) do
+ActiveRecord::Schema.define(version: 2019_03_30_153020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,21 +23,15 @@ ActiveRecord::Schema.define(version: 2019_03_29_174611) do
     t.index ["team_id"], name: "index_members_on_team_id"
   end
 
-  create_table "pairing_records", force: :cascade do |t|
-    t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "pair_id"
-    t.index ["pair_id"], name: "index_pairing_records_on_pair_id"
+  create_table "members_pairing_records", id: false, force: :cascade do |t|
+    t.bigint "member_id", null: false
+    t.bigint "pairing_record_id", null: false
+    t.index ["member_id", "pairing_record_id"], name: "index_members_records", unique: true
   end
 
-  create_table "pairs", force: :cascade do |t|
+  create_table "pairing_records", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "member_id"
-    t.bigint "other_member_id"
-    t.index ["member_id"], name: "index_pairs_on_member_id"
-    t.index ["other_member_id"], name: "index_pairs_on_other_member_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -47,5 +41,4 @@ ActiveRecord::Schema.define(version: 2019_03_29_174611) do
   end
 
   add_foreign_key "members", "teams"
-  add_foreign_key "pairing_records", "pairs"
 end
