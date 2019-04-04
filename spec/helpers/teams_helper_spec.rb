@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe TeamsHelper, type: :helper do
 
-  # TODO: Use FactoryGirl instead of instantiating every model manually
-
   describe "#generate_distinct_pairing_records" do
     it "receives a member list and returns distinct pairing records instances" do
       john = Member.new
@@ -51,6 +49,16 @@ RSpec.describe TeamsHelper, type: :helper do
       expected_pairing_records = [john_and_mary, john_and_joseph, mary_and_joseph]
 
       expect(actual_pairing_records).to eq(expected_pairing_records)
+
+      # TODO: Mock db interactions in order to stop using #destroy
+
+      john.destroy
+      mary.destroy
+      joseph.destroy
+      example_team.destroy
+      john_and_mary.destroy
+      john_and_joseph.destroy
+      mary_and_joseph.destroy
     end
   end
 end

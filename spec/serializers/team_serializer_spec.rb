@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe TeamSerializer, type: :serializer do
 
-  # TODO: Mock db interactions
-
   it 'returns serialized info' do
     team = Team.create(id: 1, name: 'Example')
 
@@ -27,12 +25,21 @@ RSpec.describe TeamSerializer, type: :serializer do
           members: [
             { id: john.id, name: john.name },
             { id: mary.id, name: mary.name }
-          ]
+          ],
+          date: Date.today
         }
       ]
     }
 
     expect(TeamSerializer.new(team).pairing_records.to_json).to eq(expected_serialized_team[:pairing_records].to_json)
     expect(TeamSerializer.new(team).to_json).to eq(expected_serialized_team.to_json)
+
+    # TODO: Mock db interactions in order to stop using #destroy
+
+    john.destroy
+    mary.destroy
+    joseph.destroy
+    team.destroy
+    john_and_mary.destroy
   end
 end

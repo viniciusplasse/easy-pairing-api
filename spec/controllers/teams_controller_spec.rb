@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe TeamsController, type: :controller do
 
-# TODO: Use FactoryGirl instead of instantiating every model manually
-
   before :all do
     @example_team = Team.create(name: 'Example Team')
 
@@ -119,7 +117,8 @@ RSpec.describe TeamsController, type: :controller do
             members: [
               { id: @john.id, name: @john.name },
               { id: @mary.id, name: @mary.name }
-            ]
+            ],
+            date: Date.today
           }
         ]
       }
@@ -127,5 +126,16 @@ RSpec.describe TeamsController, type: :controller do
       expect(response).to have_http_status(:ok)
       expect(response.body).to eq(expected_response.to_json)
     end
+  end
+
+  # TODO: Mock db interactions in order to stop using #destroy
+
+  after :all do
+    @john.destroy
+    @mary.destroy
+    @joseph.destroy
+    @claudia.destroy
+    @example_team.destroy
+    @john_and_mary.destroy
   end
 end

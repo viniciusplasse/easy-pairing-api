@@ -2,16 +2,17 @@ class PairingRecordsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    team_id = params[:team_id]
     member_ids = params[:member_ids]
+    date = params[:date]
 
-    if team_id.nil? || member_ids.nil? || member_ids.length != 2
+    if member_ids.nil? || member_ids.length != 2 || date.nil?
       return head :bad_request
     end
 
     begin
-      PairingRecord.create(team_id: team_id, member_ids: member_ids)
-    rescue StandardError
+      PairingRecord.create(member_ids: member_ids, date: date)
+    rescue StandardError => e
+      Rails.logger.info(e.message.to_s)
       return head :internal_server_error
     end
 

@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe PairingRecordSerializer, type: :serializer do
 
-  # TODO: Mock db interactions
-
   it 'returns serialized info' do
     team = Team.create(id: 1, name: 'Example')
     john = Member.create(id: 1, name: 'John', team_id: team.id)
@@ -20,5 +18,12 @@ RSpec.describe PairingRecordSerializer, type: :serializer do
     }
 
     expect(PairingRecordSerializer.new(john_and_mary).to_json).to eq(serialized_pairing_record.to_json)
+
+    # TODO: Mock db interactions in order to stop using #destroy
+
+    john.destroy
+    mary.destroy
+    team.destroy
+    john_and_mary.destroy
   end
 end
