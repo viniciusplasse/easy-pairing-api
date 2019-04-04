@@ -5,22 +5,34 @@ RSpec.describe TeamSerializer, type: :serializer do
   # TODO: Mock db interactions
 
   it 'returns serialized info' do
-    john = Member.create(id: 1, name: 'John')
-    mary = Member.create(id: 2, name: 'Mary')
-    joseph = Member.create(id: 3, name: 'Joseph')
+    team = Team.create(id: 1, name: 'Example')
 
-    team = Team.create(id: 1, name: 'Example', members: [john, mary, joseph])
+    john = Member.create(name: 'John', team_id: team.id)
+    mary = Member.create(name: 'Mary', team_id: team.id)
+    joseph = Member.create(name: 'Joseph', team_id: team.id)
+
+    john_and_mary = PairingRecord.create(members: [john, mary])
 
     expected_serialized_team = {
-        id: 1,
-        name: 'Example',
-        members: [
-          { id: 1, name: 'John' },
-          { id: 2, name: 'Mary' },
-          { id: 3, name: 'Joseph' }
-        ]
+      id: 1,
+      name: 'Example',
+      members: [
+        { id: john.id, name: john.name },
+        { id: mary.id, name: mary.name },
+        { id: joseph.id, name: joseph.name }
+      ],
+      pairing_records: [
+        {
+          id: john_and_mary.id,
+          members: [
+            { id: john.id, name: john.name },
+            { id: mary.id, name: mary.name }
+          ]
+        }
+      ]
     }
 
+    expect(TeamSerializer.new(team).pairing_records.to_json).to eq(expected_serialized_team[:pairing_records].to_json)
     expect(TeamSerializer.new(team).to_json).to eq(expected_serialized_team.to_json)
   end
 end

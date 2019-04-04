@@ -27,18 +27,7 @@ class TeamsController < ApplicationController
     begin
       team = Team.find(team_id)
 
-      response_payload = {
-        id: team.id,
-        name: team.name,
-        members: team.members.map do |member|
-          {
-            id: member.id,
-            name: member.name
-          }
-        end
-      }
-
-      render json: response_payload, status: :ok
+      render json: team, status: :ok
     rescue ActiveRecord::RecordNotFound
       return head :not_found
     rescue StandardError

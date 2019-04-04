@@ -5,26 +5,14 @@ RSpec.describe TeamsController, type: :controller do
 # TODO: Use FactoryGirl instead of instantiating every model manually
 
   before :all do
-    @john = Member.new
-    @john.id = 1
-    @john.name = 'John'
+    @example_team = Team.create(name: 'Example Team')
 
-    @mary = Member.new
-    @mary.id = 2
-    @mary.name = 'Mary'
+    @john = Member.create(name: 'John', team_id: @example_team.id)
+    @mary = Member.create(name: 'Mary', team_id: @example_team.id)
+    @joseph = Member.create(name: 'Joseph', team_id: @example_team.id)
+    @claudia = Member.create(name: 'Claudia', team_id: @example_team.id)
 
-    @joseph = Member.new
-    @joseph.id = 3
-    @joseph.name = 'Joseph'
-
-    @claudia = Member.new
-    @claudia.id = 4
-    @claudia.name = 'Claudia'
-
-    @example_team = Team.new
-    @example_team.id = 1
-    @example_team.name = 'Example Team'
-    @example_team.members = [ @john, @mary, @joseph, @claudia ]
+    @john_and_mary = PairingRecord.create(members: [@john, @mary])
   end
 
   describe "#create" do
@@ -84,15 +72,11 @@ RSpec.describe TeamsController, type: :controller do
         members: ['John', 'Mary', 'Joseph', 'Claudia']
       }
 
-      expect(Team)
-        .to receive(:create)
-        .with(name: 'Example Team')
-        .and_return(@example_team)
-
-      expect(Member).to receive(:create).with(name: 'John', team_id: 1)
-      expect(Member).to receive(:create).with(name: 'Mary', team_id: 1)
-      expect(Member).to receive(:create).with(name: 'Joseph', team_id: 1)
-      expect(Member).to receive(:create).with(name: 'Claudia', team_id: 1)
+      expect(Team).to receive(:create).with(hash_including(name: 'Example Team')).and_call_original
+      expect(Member).to receive(:create).with(hash_including(name: 'John')).and_call_original
+      expect(Member).to receive(:create).with(hash_including(name: 'Mary')).and_call_original
+      expect(Member).to receive(:create).with(hash_including(name: 'Joseph')).and_call_original
+      expect(Member).to receive(:create).with(hash_including(name: 'Claudia')).and_call_original
 
       post :create, params: request_body
 
@@ -104,7 +88,7 @@ RSpec.describe TeamsController, type: :controller do
     it "returns internal server error when a StandardError is thrown" do
       allow(Team).to receive(:find).and_raise(StandardError)
 
-      get :show, params: { id: 1 }
+      get :show, params: { id: @example_team.id }
 
       expect(response).to have_http_status(:internal_server_error)
     end
@@ -118,18 +102,25 @@ RSpec.describe TeamsController, type: :controller do
     end
 
     it "returns ok and renders a team json when everything is ok" do
-      allow(Team).to receive(:find).and_return(@example_team)
-
-      get :show, params: { id: 1 }
+      get :show, params: { id: @example_team.id }
 
       expected_response = {
-        id: 1,
-        name: 'Example Team',
+        id: @example_team.id,
+        name: @example_team.name,
         members: [
-          { id: 1, name: 'John' },
-          { id: 2, name: 'Mary' },
-          { id: 3, name: 'Joseph' },
-          { id: 4, name: 'Claudia' }
+          { id: @john.id, name: @john.name },
+          { id: @mary.id, name: @mary.name },
+          { id: @joseph.id, name: @joseph.name },
+          { id: @claudia.id, name: @claudia.name }
+        ],
+        pairing_records: [
+          {
+            id: @john_and_mary.id,
+            members: [
+              { id: @john.id, name: @john.name },
+              { id: @mary.id, name: @mary.name }
+            ]
+          }
         ]
       }
 
