@@ -8,6 +8,8 @@ Some of its features are:
 - Recommending pairs based on how many times each member paired with the others
 - Keeping track of the pairing dates
 
+#### [Click here to see the API documentation](https://github.com/hscorrea/easy-pairing-api/wiki/2.-API-Documentation) :stuck_out_tongue_winking_eye:
+
 ## Looking for the front-end?
 [https://github.com/hscorrea/easy-pairing](https://github.com/hscorrea/easy-pairing)
 
