@@ -82,6 +82,38 @@ RSpec.describe TeamsController, type: :controller do
     end
   end
 
+  describe "#add_member" do
+    it "returns bad request if name is missing" do
+      post :add_member, params: { id: @example_team.id }
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it "returns bad request if member name is not unique in a team" do
+      allow(Member).to receive(:create).and_raise(ActiveRecord::RecordNotUnique)
+
+      post :add_member, params: { id: @example_team.id, name: 'not unique member name' }
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
+    it "returns internal server error when a StandardError is thrown" do
+      allow(Member).to receive(:create).and_raise(StandardError)
+
+      get :add_member, params: { id: @example_team.id, name: 'Ricky' }
+
+      expect(response).to have_http_status(:internal_server_error)
+    end
+
+    it "returns created (and saves on database) if everything is ok" do
+      expect(Member).to receive(:create).with(hash_including(name: 'Ricky'))
+
+      post :add_member, params: { id: @example_team.id, name: 'Ricky' }
+
+      expect(response).to have_http_status(:created)
+    end
+  end
+
   describe "#show" do
     it "returns internal server error when a StandardError is thrown" do
       allow(Team).to receive(:find).and_raise(StandardError)
