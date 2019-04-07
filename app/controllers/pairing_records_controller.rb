@@ -11,11 +11,24 @@ class PairingRecordsController < ApplicationController
 
     begin
       PairingRecord.create(member_ids: member_ids, date: date)
-    rescue StandardError => e
-      Rails.logger.info(e.message.to_s)
+    rescue StandardError
       return head :internal_server_error
     end
 
     head :created
+  end
+
+  def destroy
+    pairing_record_id = params[:id]
+
+    begin
+      PairingRecord.destroy(pairing_record_id)
+    rescue ActiveRecord::RecordNotFound
+      return head :not_found
+    rescue StandardError
+      return head :internal_server_error
+    end
+
+    head :no_content
   end
 end

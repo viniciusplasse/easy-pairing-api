@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe PairingRecordsController, type: :controller do
 
-  before :all do
+  before :each do
     @example_team = Team.create(name: 'Example Team')
 
     @john = Member.create(name: 'John', team_id: @example_team.id)
@@ -58,9 +58,33 @@ RSpec.describe PairingRecordsController, type: :controller do
     end
   end
 
+  describe "#destroy" do
+    it "returns not found if there is no team with the id informed" do
+      allow(PairingRecord).to receive(:destroy).and_raise(ActiveRecord::RecordNotFound)
+
+      delete :destroy, params: { id: 'non existent team id' }
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "returns internal server error if there is a failure on pairing record deletion" do
+      allow(PairingRecord).to receive(:destroy).and_raise(StandardError)
+
+      delete :destroy, params: { id: @john_and_mary.id }
+
+      expect(response).to have_http_status(:internal_server_error)
+    end
+
+    it "returns no content if there pairing record was deleted successfully" do
+      delete :destroy, params: { id: @john_and_mary.id }
+
+      expect(response).to have_http_status(:no_content)
+    end
+  end
+
   # TODO: Mock db interactions in order to stop using #destroy
 
-  after :all do
+  after :each do
     @john.destroy
     @mary.destroy
     @joseph.destroy
