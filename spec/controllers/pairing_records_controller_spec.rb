@@ -10,7 +10,7 @@ RSpec.describe PairingRecordsController, type: :controller do
     @joseph = Member.create(name: 'Joseph', team_id: @example_team.id)
     @claudia = Member.create(name: 'Claudia', team_id: @example_team.id)
 
-    @john_and_mary = PairingRecord.create(members: [@john, @mary])
+    @john_and_mary = PairingRecord.create(members: [@john, @mary], date: Date.today)
   end
 
   describe "#create" do

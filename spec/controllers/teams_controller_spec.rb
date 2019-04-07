@@ -10,7 +10,7 @@ RSpec.describe TeamsController, type: :controller do
     @joseph = Member.create(name: 'Joseph', team_id: @example_team.id)
     @claudia = Member.create(name: 'Claudia', team_id: @example_team.id)
 
-    @john_and_mary = PairingRecord.create(members: [@john, @mary])
+    @john_and_mary = PairingRecord.create(members: [@john, @mary], date: Date.today)
   end
 
   describe "#create" do
@@ -114,11 +114,11 @@ RSpec.describe TeamsController, type: :controller do
         pairing_records: [
           {
             id: @john_and_mary.id,
+            date: Date.today,
             members: [
               { id: @john.id, name: @john.name },
               { id: @mary.id, name: @mary.name }
-            ],
-            date: Date.today
+            ]
           }
         ]
       }

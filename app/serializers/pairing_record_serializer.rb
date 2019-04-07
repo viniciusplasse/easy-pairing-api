@@ -1,5 +1,6 @@
 class PairingRecordSerializer < ActiveModel::Serializer
   attributes :id
+  attributes :date
 
   has_many :members
 

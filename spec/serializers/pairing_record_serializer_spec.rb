@@ -7,10 +7,11 @@ RSpec.describe PairingRecordSerializer, type: :serializer do
     john = Member.create(id: 1, name: 'John', team_id: team.id)
     mary = Member.create(id: 2, name: 'Mary', team_id: team.id)
 
-    john_and_mary = PairingRecord.create(id: 1, members: [john, mary])
+    john_and_mary = PairingRecord.create(id: 1, members: [john, mary], date: Date.today)
 
     serialized_pairing_record = {
       id: john_and_mary.id,
+      date: Date.today,
       members: [
         { id: john.id, name: john.name },
         { id: mary.id, name: mary.name }
