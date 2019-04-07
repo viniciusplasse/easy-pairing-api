@@ -21,25 +21,6 @@ class TeamsController < ApplicationController
     head :created
   end
 
-  def add_member
-    team_id = params[:id]
-    name = params[:name]
-
-    if name.nil?
-      return head :bad_request
-    end
-
-    begin
-      Member.create(name: name, team_id: team_id)
-    rescue ActiveRecord::RecordNotUnique
-      return head :bad_request
-    rescue StandardError
-      return head :internal_server_error
-    end
-
-    head :created
-  end
-
   def show
     team_id = params[:id]
 
