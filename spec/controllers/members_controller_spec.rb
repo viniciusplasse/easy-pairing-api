@@ -54,7 +54,7 @@ RSpec.describe MembersController, type: :controller do
           .to receive(:update_attributes)
                   .and_raise(ActiveModel::UnknownAttributeError)
 
-      team = Team.create(name: 'BuFangLaJiao')
+      team = Team.create(name: 'BuFangLaJiao', password: '123', password_confirmation: '123')
       ricky = Member.create(name: "Ricky", team_id: team.id)
 
       put :update, params: { id: ricky.id, name: 'Ricky Renamed' }
@@ -67,7 +67,7 @@ RSpec.describe MembersController, type: :controller do
           .to receive(:update_attributes)
                   .with(hash_including({ name: 'Ricky Renamed' }))
 
-      team = Team.create(name: 'BuFangLaJiao')
+      team = Team.create(name: 'BuFangLaJiao', password: '123', password_confirmation: '123')
       ricky = Member.create(name: "Ricky", team_id: team.id)
 
       put :update, params: { id: ricky.id, name: 'Ricky Renamed' }

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe TeamSerializer, type: :serializer do
 
   it 'returns serialized info' do
-    team = Team.create(id: 1, name: 'Example')
+    team = Team.create(id: 1, name: 'Example', password: '123', password_confirmation: '123')
 
     john = Member.create(name: 'John', team_id: team.id)
     mary = Member.create(name: 'Mary', team_id: team.id)

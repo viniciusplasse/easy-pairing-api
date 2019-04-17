@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe PairingRecordsController, type: :controller do
 
   before :each do
-    @example_team = Team.create(name: 'Example Team')
+    @example_team = Team.create(name: 'Example Team', password: '123', password_confirmation: '123')
 
     @john = Member.create(name: 'John', team_id: @example_team.id)
     @mary = Member.create(name: 'Mary', team_id: @example_team.id)

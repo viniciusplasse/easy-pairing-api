@@ -4,7 +4,7 @@ RSpec.describe PairingSuggestionsController, type: :controller do
 
   describe "#show" do
     it "returns a pairing suggestion with the members who paired the least" do
-      team = Team.create(name: 'Example')
+      team = Team.create(name: 'Example', password: '123', password_confirmation: '123')
 
       john = Member.create(name: 'John', team_id: team.id)
       mary = Member.create(name: 'Mary', team_id: team.id)
