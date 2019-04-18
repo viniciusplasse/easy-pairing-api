@@ -1,4 +1,6 @@
 class AuthenticationController < ApplicationController
+  include AuthenticationHelper
+
   skip_before_action :verify_authenticity_token
 
   def create
@@ -16,17 +18,5 @@ class AuthenticationController < ApplicationController
     head :unauthorized
   rescue ActionController::ParameterMissing
     head :bad_request
-  end
-
-  private
-
-  def encode(payload, expiration_time = 24.hours.from_now)
-    payload[:expiration_time] = expiration_time.to_i
-    JWT.encode(payload, Rails.application.secrets.secret_key_base.to_s)
-  end
-
-  def decode(token)
-    decoded = JWT.decode(token, SECRET_KEY)[0]
-    HashWithIndifferentAccess.new decoded
   end
 end
