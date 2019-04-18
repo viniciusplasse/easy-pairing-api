@@ -30,6 +30,6 @@ class PairingRecordsController < ApplicationController
       return head :internal_server_error
     end
 
-    head :no_content
+    head :ok
   end
 end

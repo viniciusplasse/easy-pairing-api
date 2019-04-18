@@ -75,10 +75,10 @@ RSpec.describe PairingRecordsController, type: :controller do
       expect(response).to have_http_status(:internal_server_error)
     end
 
-    it "returns no content if there pairing record was deleted successfully" do
+    it "returns ok if there pairing record was deleted successfully" do
       delete :destroy, params: { id: @john_and_mary.id }
 
-      expect(response).to have_http_status(:no_content)
+      expect(response).to have_http_status(:ok)
     end
   end
 
