@@ -1,4 +1,5 @@
 class TeamsController < ApplicationController
+  before_action :verify_authorization_header, except: :create unless Rails.env.test?
   skip_before_action :verify_authenticity_token
 
   def create
