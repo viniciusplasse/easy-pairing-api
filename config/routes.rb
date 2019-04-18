@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   post '/pairing_records', to: 'pairing_records#create'
   delete '/pairing_records/:id', to: 'pairing_records#destroy'
   get '/teams/:id/suggested_pairs', to: 'pairing_suggestions#show'
+  post '/authentication', to: 'authentication#create'
 end
