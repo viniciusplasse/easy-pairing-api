@@ -23,7 +23,7 @@ class TeamsController < ApplicationController
     end
 
     head :created
-  rescue ActionController::ParameterMissing
+  rescue ActiveRecord::RecordNotUnique, ActionController::ParameterMissing
     return head :bad_request
   rescue StandardError
     return head :internal_server_error

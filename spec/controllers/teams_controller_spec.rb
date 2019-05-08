@@ -57,6 +57,15 @@ RSpec.describe TeamsController, type: :controller do
           password_confirmation: 'what the hell but different'
         }
       end
+
+      it "when team name already exists" do
+        @team = {
+          name: 'Example Team',
+          members: ['John', 'Mary', 'Claudia'],
+          password: 'Password',
+          password_confirmation: 'Password'
+        }
+      end
       
       after :each do
         post :create, params: @team
@@ -68,7 +77,7 @@ RSpec.describe TeamsController, type: :controller do
     describe "returns internal server error" do
       before :each do
         @team = {
-          name: 'Example Team',
+          name: 'Perfect Team',
           members: ['John', 'Mary', 'Joseph', 'Claudia'],
           password: '123',
           password_confirmation: '123'
@@ -92,14 +101,14 @@ RSpec.describe TeamsController, type: :controller do
 
     it "returns created (and saves on database) if everything is ok" do
       request_body = {
-        name: 'Example Team',
+        name: 'Perfect Team',
         members: ['John', 'Mary', 'Joseph', 'Claudia'],
         password: '123',
         password_confirmation: '123'
       }
 
       expect(Team).to receive(:create)
-        .with(hash_including(name: 'Example Team', password: '123', password_confirmation: '123'))
+        .with(hash_including(name: 'Perfect Team', password: '123', password_confirmation: '123'))
         .and_call_original
 
       expect(Member).to receive(:create).with(hash_including(name: 'John')).and_call_original
