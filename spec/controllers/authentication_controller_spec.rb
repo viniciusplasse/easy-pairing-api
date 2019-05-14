@@ -38,7 +38,9 @@ RSpec.describe AuthenticationController, type: :controller do
       post :create, params: request_body
 
       expect(response).to have_http_status(:created)
-      expect(response.body).to match(/^{\"token\":\"eyJhbGciOiJIUzI1NiJ9.*\"}$/)
+      expect(JSON.parse(response.body)['teamName']).to eq(team.name)
+      expect(JSON.parse(response.body)['token']).to match(/eyJhbGciOiJIUzI1NiJ9.*/)
+
 
       team.destroy
     end

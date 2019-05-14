@@ -10,7 +10,7 @@ class AuthenticationController < ApplicationController
     team = Team.where(name: informed_name).first
 
     if team&.authenticate(informed_password)
-      jwt = { token: encode(team_id: team.id) }
+      jwt = { token: encode(team_id: team.id), teamName: team.name }
       
       return render json: jwt, status: :created
     end
