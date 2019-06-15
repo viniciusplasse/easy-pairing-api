@@ -5,17 +5,17 @@ RSpec.describe AuthenticationController, type: :controller do
     describe "returns bad request" do
       it "when the team's name is missing" do
         request_body = { password: 'Password' }
-  
+
         post :create, params: request_body
-  
+
         expect(response).to have_http_status(:bad_request)
       end
 
       it "when the team's password is missing" do
         request_body = { name: 'A team\'s name' }
-  
+
         post :create, params: request_body
-  
+
         expect(response).to have_http_status(:bad_request)
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe AuthenticationController, type: :controller do
       post :create, params: request_body
 
       expect(response).to have_http_status(:created)
-      expect(JSON.parse(response.body)['teamName']).to eq(team.name)
+      expect(JSON.parse(response.body)['team_id']).to eq(team.id)
       expect(JSON.parse(response.body)['token']).to match(/eyJhbGciOiJIUzI1NiJ9.*/)
 
 
