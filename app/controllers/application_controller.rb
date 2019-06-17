@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   def verify_authorization_header
     header = request.headers['Authorization']
     decode(header)
-  rescue JWT::DecodeError
+  rescue JWT::DecodeError => e
+    Rails.logger.info('Authorization error: ' + e.inspect)
     head :unauthorized
   end
 end

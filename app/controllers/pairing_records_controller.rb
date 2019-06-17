@@ -12,7 +12,8 @@ class PairingRecordsController < ApplicationController
 
     begin
       PairingRecord.create(member_ids: member_ids, date: date)
-    rescue StandardError
+    rescue StandardError => e
+      Rails.logger.info('Error adding pairing record: ' + e.inspect)
       return head :internal_server_error
     end
 
