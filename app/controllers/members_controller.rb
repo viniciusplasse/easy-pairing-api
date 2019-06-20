@@ -40,11 +40,13 @@ class MembersController < ApplicationController
     member_id = params[:id]
 
     begin
-      Member.destroy(member_id)
+      member = Member.find(member_id)
+      member.pairing_record_ids.each do |record_id|
+        PairingRecord.find(record_id).destroy
+      end
+      member.destroy
     rescue ActiveRecord::RecordNotFound
       return head :not_found
-    rescue StandardError
-      return head :internal_sever_error
     end
 
     head :ok
