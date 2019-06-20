@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   post '/teams', to: 'teams#create'
   get '/teams/:id', to: 'teams#show'
+  put '/teams/:id', to: 'teams#update'
   post '/teams/:id/members', to: 'members#create'
   put '/members/:id', to: 'members#update'
   delete '/members/:id', to: 'members#destroy'

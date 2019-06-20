@@ -11,7 +11,7 @@ class TeamsController < ApplicationController
     if team_members.length < 3 || team_password != team_password_confirmation
       return head :bad_request
     end
-  
+
     team = Team.create(
       name: team_name,
       password: team_password,
@@ -41,5 +41,19 @@ class TeamsController < ApplicationController
     rescue StandardError
       return head :internal_server_error
     end
+  end
+
+  # TODO: Cover with tests (sorry TDD gods)
+  def update
+    id = params.require(:id)
+    new_name = params.require(:name)
+
+    Team.find(id).update_attributes(name: new_name)
+
+    head :ok
+  rescue ActiveRecord::RecordNotFound
+    return head :not_found
+  rescue ActionController::ParameterMissing
+    return head :bad_request
   end
 end
