@@ -25,7 +25,8 @@ class TeamsController < ApplicationController
     head :created
   rescue ActiveRecord::RecordNotUnique, ActionController::ParameterMissing
     return head :bad_request
-  rescue StandardError
+  rescue StandardError => e
+    Rails.logger.info(e.inspect)
     return head :internal_server_error
   end
 
