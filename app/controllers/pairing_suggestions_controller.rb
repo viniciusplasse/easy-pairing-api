@@ -12,7 +12,7 @@ class PairingSuggestionsController < ApplicationController
       members.each do |peer|
         next if member.id == peer.id || members_analysed.include?(peer)
 
-        times_together = member.pairing_records.select { |record| record.members.include?(peer) }.length
+        times_together = member.get_pairing_occurrences_with(peer)
         @lowest = times_together if @lowest.nil?
 
         if times_together < @lowest
