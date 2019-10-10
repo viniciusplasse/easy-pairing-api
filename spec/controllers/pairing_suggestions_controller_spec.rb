@@ -2,37 +2,28 @@ require 'rails_helper'
 
 RSpec.describe PairingSuggestionsController, type: :controller do
 
+  let(:pairing_suggest) { double }
+  let(:pairing_suggestions) { 
+    {
+      members: [
+        { id: 10, name: 'john' },
+        { id: 20, name: 'joseph' }
+      ] 
+    }
+  }
+
   describe "#show" do
     it "returns a pairing suggestion with the members who paired the least" do
-      team = Team.create(name: 'Example', password: '123', password_confirmation: '123')
+      allow(PairingSuggest).to receive(:new).with('1')
+        .and_return(pairing_suggest)
+  
+      allow(pairing_suggest).to receive(:get_pair_suggestions)
+        .and_return(pairing_suggestions)
 
-      john = Member.create(name: 'John', team_id: team.id)
-      mary = Member.create(name: 'Mary', team_id: team.id)
-      joseph = Member.create(name: 'Joseph', team_id: team.id)
-      claudia = Member.create(name: 'Claudia', team_id: team.id)
-
-      john_and_mary = PairingRecord.create(date: Date.yesterday, members: [john, mary])
-      joseph_and_claudia = PairingRecord.create(date: Date.yesterday, members: [joseph, claudia])
-
-      get :show, params: { id: team.id }
-
-      expected_response = {
-        members: [
-          { id: john.id, name: john.name },
-          { id: joseph.id, name: joseph.name }
-        ]
-      }
+      get :show, params: { id: 1 }
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to eq(expected_response.to_json)
-
-      john.destroy
-      mary.destroy
-      joseph.destroy
-      claudia.destroy
-      john_and_mary.destroy
-      joseph_and_claudia.destroy
-      team.destroy
+      expect(response.body).to eq(pairing_suggestions.to_json)
     end
   end
 end
