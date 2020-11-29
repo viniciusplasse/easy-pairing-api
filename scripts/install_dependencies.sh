@@ -1,3 +1,4 @@
 #!/bin/bash
-pwd
+
+cd /home/ubuntu
 docker-compose build
