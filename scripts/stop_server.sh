@@ -2,4 +2,4 @@
 
 cd /home/ubuntu
 
-sudo docker-compose down
+docker-compose down
