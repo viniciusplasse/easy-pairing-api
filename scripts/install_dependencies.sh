@@ -3,6 +3,6 @@
 cd /home/ubuntu
 # docker-compose build
 
-apt-get update -qq
-apt-get install -y nodejs postgresql-client
+sudo apt-get update -qq
+sudo apt-get install -y nodejs postgresql-client
 bundle install
